@@ -117,21 +117,21 @@ model_option = st.sidebar.selectbox(
     ]
 )
 
-# Demo mode when file is not uploaded
 df = None
+use_sample = st.sidebar.checkbox("Use sample test_data.csv", value=False, help="Check this if you want to test with the built-in sample dataset.")
+
 if uploaded_file is not None:
     try:
         df = pd.read_csv(uploaded_file)
         st.sidebar.success("Test dataset loaded successfully!")
     except Exception as e:
         st.sidebar.error(f"Error loading CSV file: {e}")
-else:
-    # Try to load local test_data.csv automatically as default demo data
+elif use_sample:
     if os.path.exists('test_data.csv'):
         df = pd.read_csv('test_data.csv')
-        st.sidebar.info("Using local 'test_data.csv' as demo data. Upload a new CSV file to replace it.")
+        st.sidebar.info("Loaded sample 'test_data.csv'.")
     else:
-        st.sidebar.warning("No test data found. Please upload a test dataset.")
+        st.sidebar.warning("Sample 'test_data.csv' file not found.")
 
 if df is not None:
     # Verify features and target existence
